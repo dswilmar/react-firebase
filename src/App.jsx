@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { db } from "./firebaseConnection";
-import { doc, setDoc, collection, addDoc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { doc, setDoc, collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 
 function App() {
 
@@ -68,6 +68,15 @@ function App() {
     })
   }
 
+  async function excluirPost(id) {
+    const docRef = doc(db, "posts", id);
+    await deleteDoc(docRef).then(() => {
+      alert('Post excluído com sucesso!');
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   return (
     <div>      
       <h1>ReactJS + Firebase</h1>
@@ -89,6 +98,7 @@ function App() {
                 <strong>{post.id}</strong><br/>
                 <span>Título: {post.titulo}</span><br />
                 <span>Autor: {post.autor}</span><br />
+                <button onClick={() => excluirPost(post.id)}>Excluir post</button>
                 <hr />
               </li>
             )
